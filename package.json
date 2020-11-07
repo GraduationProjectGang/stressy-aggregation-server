@@ -1,0 +1,22 @@
+{
+  "name": "stressy-aggregation-server",
+  "version": "1.0.0",
+  "description": "Stressy Aggregation Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GraduationProjectGang/stressy-aggregation-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GraduationProjectGang/stressy-aggregation-server/issues"
+  },
+  "homepage": "https://github.com/GraduationProjectGang/stressy-aggregation-server#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
