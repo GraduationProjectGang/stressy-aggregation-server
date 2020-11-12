@@ -1,12 +1,7 @@
 const express = require('express');
-const { verifyTokenMiddle } = require('./middleware');
-
+const math = require('mathjs');
 const router = express.Router();
 
+router.post('/model/global/update', verifyTokenGlobal, async (req, res) => {
 
-
-router.post('/__protocol/aggregation', verifyTokenMiddle ,async (req, res) => {
-    const { party_id } = req.body;
-    
 });
-
