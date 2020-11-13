@@ -1,14 +1,11 @@
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 
 dotenv.config();
 const v1 = require('./routes/v1');
-const { sequelize } = require('./models');
 
 const app = express();
 
@@ -18,31 +15,30 @@ nunjucks.configure('views', {
   express: app,
   watch: true,
 });
-sequelize.sync({ force: false })
-  .then(() => {
-    console.log('데이터베이스 연결 성공');
-  })
-  .catch((err) => {
-    console.error(err);
-  });
-const sessionMiddleware = session({
-  resave: false,
-  saveUninitialized: false,
-  secret: process.env.COOKIE_SECRET,
-  cookie: {
-    httpOnly: true,
-    secure: false,
-  },
-});
+// sequelize.sync({ force: false })
+//   .then(() => {
+//     console.log('데이터베이스 연결 성공');
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });
+// const sessionMiddleware = session({
+//   resave: false,
+//   saveUninitialized: false,
+//   secret: process.env.COOKIE_SECRET,
+//   cookie: {
+//     httpOnly: true,
+//     secure: false,
+//   },
+// });
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
-app.use(sessionMiddleware);
+// app.use(cookieParser(process.env.COOKIE_SECRET));
+// app.use(sessionMiddleware);
 
-app.use('/', indexRouter);
 app.use('/v1', v1);
 
 app.use((req, res, next) => {
