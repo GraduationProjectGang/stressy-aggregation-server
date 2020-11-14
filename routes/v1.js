@@ -2,6 +2,7 @@ const express = require('express');
 const math = require('mathjs');
 const sr = require('secure-random');
 const multer = require('multer');
+const fs = require('fs');
 
 let partyID = 0
 let partyIndex = 0
@@ -17,44 +18,144 @@ const _storage = multer.diskStorage({
 
 const router = express.Router();
 
-router.post('/sendweight', multer({ storage: _storage }).single('weights'), async (req, res) => {
 
-  const { party_id } = req.body;
-  partyID = party_id;
+router.post('/send_w0', async (req, res) => {
 
-  try {
+  const { W_0 } = req.body;
 
-    let file = req.file;
-    let originalName = '';
-    let fileName = '';
-    let mimeType = '';
-    let size = 0;
-
-    if (file) {
-      originalName = file.originalname;
-      filename = file.filename;
-      mimeType = file.mimetype;
-      size = file.size;
-      console.log("execute" + fileName);
-    } else {
-      console.log("request is null");
-    }
-  } catch (err) {
-    console.dir(err.stack);
+  if (!fs.existsSync(`weights/client_${partyIndex}`)) {
+    fs.mkdirSync(`weights/client_${partyIndex}`);
   }
 
-  console.log(req.file);
-  console.log(req.body);
+  const location = `weights/client_${partyIndex}/W_0.json`;
 
-  res.send("Uploaded : ", req.file);
+  fs.open(location, 'w+', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  fs.writeFile(location, W_0, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  if (fs.existsSync())
+
+  res.send();
 
 });
 
-router.post('/calculate', async (req, res) => {
+router.post('/send_rw0', async (req, res) => {
 
-  console.log(req);
+  const { RW_0 } = req.body;
 
-  res.json();
+  if (!fs.existsSync(`weights/client_${partyIndex}`)) {
+    fs.mkdirSync(`weights/client_${partyIndex}`);
+  }
+
+  const location = `weights/client_${partyIndex}/RW_0.json`;
+
+  fs.open(location, 'w+', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  fs.writeFile(location, RW_0, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  res.send();
+
 });
+
+router.post('/send_b0', async (req, res) => {
+
+  const { b_0 } = req.body;
+
+  if (!fs.existsSync(`weights/client_${partyIndex}`)) {
+    fs.mkdirSync(`weights/client_${partyIndex}`);
+  }
+
+  const location = `weights/client_${partyIndex}/b_0.json`;
+
+  fs.open(location, 'w+', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  fs.writeFile(location, b_0, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  res.send();
+
+});
+
+router.post('/send_w2', async (req, res) => {
+
+  const { W_2 } = req.body;
+
+  if (!fs.existsSync(`weights/client_${partyIndex}`)) {
+    fs.mkdirSync(`weights/client_${partyIndex}`);
+  }
+
+  const location = `weights/client_${partyIndex}/W_2.json`;
+
+  fs.open(location, 'w+', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  fs.writeFile(location, W_2, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  res.send();
+
+});
+
+router.post('/send_b2', async (req, res) => {
+
+  const { b_2 } = req.body;
+
+  if (!fs.existsSync(`weights/client_${partyIndex}`)) {
+    fs.mkdirSync(`weights/client_${partyIndex}`);
+  }
+
+  const location = `weights/client_${partyIndex}/b_2.json`;
+
+  fs.open(location, 'w+', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  fs.writeFile(location, b_2, 'utf8', (err, data) => {
+    if (err) {
+      console.error(err);
+    }
+  });
+
+  res.send();
+
+});
+
+const calculateWeights = () => {
+
+
+
+}
+
 
 module.exports = router;

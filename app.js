@@ -3,11 +3,15 @@ const path = require('path');
 const morgan = require('morgan');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
+const parser = require('body-parser');
 
 dotenv.config();
 const v1 = require('./routes/v1');
 
 const app = express();
+
+app.use(parser.json({ limit: '200mb' }));
+app.use(parser.urlencoded({ limit: '200mb', extended: true }));
 
 app.set('port', process.env.PORT || 49953);
 app.set('view engine', 'html');
