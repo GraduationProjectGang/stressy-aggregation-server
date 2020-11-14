@@ -1,6 +1,5 @@
 const e = require('express');
 const jwt = require('jsonwebtoken');
-const { Device, Party, Token, User, sequelize } = require('../models');
 
 exports.requestGlobalModel = (req, res, next) => {
   
