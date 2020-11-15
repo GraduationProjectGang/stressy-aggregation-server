@@ -17,7 +17,7 @@ admin.initializeApp({
 let tokens = new Array();
 
 const WEIGHT_ELEMENT_SIZE = 69636;
-const PARTY_THRESHOLD = 2;
+const PARTY_THRESHOLD = 3;
 
 let calculatedWeights = math.zeros(WEIGHT_ELEMENT_SIZE);
 let weightCount = 0;
