@@ -4,9 +4,12 @@ const morgan = require('morgan');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
 const parser = require('body-parser');
+require('log-timestamp');
 
 dotenv.config();
 const v1 = require('./routes/v1');
+
+const logStr = "세지원 :";
 
 const app = express();
 
@@ -44,5 +47,5 @@ app.use((err, req, res, next) => {
 });
 
 const server = app.listen(app.get('port'), () => {
-  console.log(app.get('port'), '번 포트에서 대기중');
+  console.log(logStr, app.get('port'), '번 포트에서 대기중');
 });

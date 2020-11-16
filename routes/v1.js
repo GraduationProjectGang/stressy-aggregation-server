@@ -3,6 +3,7 @@ const math = require('mathjs');
 const sr = require('secure-random');
 const fs = require('fs');
 const admin = require('firebase-admin');
+require('log-timestamp');
 
 // FCM initialize
 
@@ -37,6 +38,8 @@ let sizePadding = 1;
 
 const router = express.Router();
 
+const logStr = "세지원 :";
+
 router.post('/size/:sizePadding', async(req, res) => {
   try {
     sizePadding = Number(req.params.sizePadding);
@@ -54,7 +57,6 @@ router.post('/size/:sizePadding', async(req, res) => {
   }
 });
 
-
 router.post('/send_w0', async (req, res) => {
 
   if (weightCount === 0) {
@@ -71,6 +73,8 @@ router.post('/send_w0', async (req, res) => {
     if (tk === fcm_token) return;
   })
   tokens.push(fcm_token);
+
+  console.log(logStr, `Party ${partyId}'s Weight Value, current Weight Count = ${weightCount + 1}`);
 
   const splitWeights_0W = W_0.replace("[", "").replace("]", "").split(",");
   const splitWeights_0RW = RW_0.replace("[", "").replace("]", "").split(",");
@@ -122,8 +126,13 @@ router.post('/send_w0', async (req, res) => {
   finalWeights_2b = math.add(finalWeights_2b, matrix_2b);
 
   weightCount += 1;
+
+  console.log(logStr, `Party ${partyId}'s Weight Value aggregated Successfully`);
   
   if (weightCount === PARTY_THRESHOLD) {
+
+    console.log(logStr, `All of Party ${partyId}'s members has sent Weight, Broadcast new Weights`);
+
     finalWeights_0W = math.divide(finalWeights_0W, sizePadding);
     finalWeights_0RW = math.divide(finalWeights_0RW, sizePadding);
     finalWeights_0b = math.divide(finalWeights_0b, sizePadding);
@@ -135,12 +144,11 @@ router.post('/send_w0', async (req, res) => {
     weightCount = 0;
   }
 
-  console.log(finalWeights_0W);
-  console.log(finalWeights_0RW);
-  console.log(finalWeights_0b);
-  console.log(finalWeights_2W);
-  console.log(finalWeights_2b);
-
+  console.log(logStr, `layer 0_W's calculated weight matrix: ${finalWeights_0W}`);
+  console.log(logStr, `layer 0_RW's calculated weight matrix: ${finalWeights_0RW}`);
+  console.log(logStr, `layer 0_b's calculated weight matrix: ${finalWeights_0b}`);
+  console.log(logStr, `layer 2_W's calculated weight matrix: ${finalWeights_2W}`);
+  console.log(logStr, `layer 2_b's calculated weight matrix: ${finalWeights_2b}`);
 
   return res.status(201).json({
     code: 201,
@@ -150,6 +158,7 @@ router.post('/send_w0', async (req, res) => {
 });
 
 router.post('/receive_weights', async (req, res) => {
+  console.log(logStr, "An anonymous user came in to get Calculated Weights");
   res.json({
     finalWeights_0W,
     finalWeights_0RW,
@@ -161,8 +170,6 @@ router.post('/receive_weights', async (req, res) => {
 
 const sendFCM = (tks) => {
 
-  console.log("다 차서 FCM 보내");
-
   const message = {
     data: { title: "receiveWeights", body: "receiveWeights" },
     tokens: tks,
@@ -171,6 +178,7 @@ const sendFCM = (tks) => {
 
   admin.messaging().sendMulticast(message)
     .then((response) => {
+      console.log(logStr, "계산된 Weight Matrix를 얻을 수 있는 Router 개방");
       console.log("Successfully sent message: ", response);
     })
     .catch((error) => {
