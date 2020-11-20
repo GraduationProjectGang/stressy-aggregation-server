@@ -139,16 +139,22 @@ router.post('/send_w0', async (req, res) => {
     finalWeights_2W = math.divide(finalWeights_2W, sizePadding);
     finalWeights_2b = math.divide(finalWeights_2b, sizePadding);
 
+    console.log(logStr, `Parameter 0_W's calculated weight matrix: ${finalWeights_0W}`);
+    console.log(logStr, `Parameter 0_RW's calculated weight matrix: ${finalWeights_0RW}`);
+    console.log(logStr, `Parameter 0_b's calculated weight matrix: ${finalWeights_0b}`);
+    console.log(logStr, `Parameter 2_W's calculated weight matrix: ${finalWeights_2W}`);
+    console.log(logStr, `Parameter 2_b's calculated weight matrix: ${finalWeights_2b}`);
+
+    console.log(logStr, `Parameter 0_W's calculated weight matrix size: ${finalWeights_0W.size}`);
+    console.log(logStr, `Parameter 0_RW's calculated weight matrix size: ${finalWeights_0RW.size}`);
+    console.log(logStr, `Parameter 0_b's calculated weight matrix size: ${finalWeights_0b.size}`);
+    console.log(logStr, `Parameter 2_W's calculated weight matrix size: ${finalWeights_2W.size}`);
+    console.log(logStr, `Parameter 2_b's calculated weight matrix size: ${finalWeights_2b.size}`);
+
     sendFCM(tokens);
     tokens = [];
     weightCount = 0;
   }
-
-  console.log(logStr, `layer 0_W's calculated weight matrix: ${finalWeights_0W}`);
-  console.log(logStr, `layer 0_RW's calculated weight matrix: ${finalWeights_0RW}`);
-  console.log(logStr, `layer 0_b's calculated weight matrix: ${finalWeights_0b}`);
-  console.log(logStr, `layer 2_W's calculated weight matrix: ${finalWeights_2W}`);
-  console.log(logStr, `layer 2_b's calculated weight matrix: ${finalWeights_2b}`);
 
   return res.status(201).json({
     code: 201,
